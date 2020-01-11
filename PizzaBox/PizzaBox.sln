@@ -1,0 +1,35 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBoxClient", "PizzaBoxClient\PizzaBoxClient.csproj", "{2435621A-5601-4E94-877F-476DC2A306AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBoxDomain", "PizzaBoxDomain\PizzaBoxDomain.csproj", "{04AFCB1C-8D80-4F2D-8E55-294F5D78FB24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBoxStoring", "PizzaBoxStoring\PizzaBoxStoring.csproj", "{A2B442ED-396F-4E7F-AC26-830DEBB1B7FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBoxTesting", "PizzaBoxTesting\PizzaBoxTesting.csproj", "{D6E4073E-43A6-4B34-BEF6-62B2C0DB2E30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2435621A-5601-4E94-877F-476DC2A306AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2435621A-5601-4E94-877F-476DC2A306AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2435621A-5601-4E94-877F-476DC2A306AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2435621A-5601-4E94-877F-476DC2A306AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04AFCB1C-8D80-4F2D-8E55-294F5D78FB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04AFCB1C-8D80-4F2D-8E55-294F5D78FB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04AFCB1C-8D80-4F2D-8E55-294F5D78FB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04AFCB1C-8D80-4F2D-8E55-294F5D78FB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2B442ED-396F-4E7F-AC26-830DEBB1B7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2B442ED-396F-4E7F-AC26-830DEBB1B7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2B442ED-396F-4E7F-AC26-830DEBB1B7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2B442ED-396F-4E7F-AC26-830DEBB1B7FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6E4073E-43A6-4B34-BEF6-62B2C0DB2E30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E4073E-43A6-4B34-BEF6-62B2C0DB2E30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E4073E-43A6-4B34-BEF6-62B2C0DB2E30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E4073E-43A6-4B34-BEF6-62B2C0DB2E30}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
