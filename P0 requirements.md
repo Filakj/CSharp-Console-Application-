@@ -10,9 +10,13 @@
   + [project - classlib ] PizzaBox.Storing.csproj
     + [folder] Repositories
   + [project - xunit] PizzaBox.Testing.csproj
-    + [folder] Mocks
-    + [folder] Specs
+    + [folder] Mocks - mocking framework if using dependincy injection . test buissness with initiated data or initiated data structure 
+    + [folder] Specs - 
+    
 ## requirements
+
+
+
 ### store
 + [required] should exist at least 1 store
 + [required] should be able to view its completed orders
