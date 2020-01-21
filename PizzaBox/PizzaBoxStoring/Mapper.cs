@@ -17,7 +17,9 @@ namespace PizzaBoxStoring
                 LastName = pizzauser.LastName,
                 Cell = pizzauser.Cell,
                 UserAddress = pizzauser.UserAddress,
-                Email = pizzauser.Email
+                Email = pizzauser.Email,
+                UserJoinDate = pizzauser.UserJoinDate
+               
 
             };
             }
@@ -29,11 +31,51 @@ namespace PizzaBoxStoring
                 Storename = pizzastore.Storename,
                 StorePassword = pizzastore.StorePassword,
                 Cell = pizzastore.Cell,
-                StoreAddress = pizzastore.StoreAddress
+                StoreAddress = pizzastore.StoreAddress,
+                PresetPizza = pizzastore.PresetPizza,
+                PresetPizzaId = pizzastore.PresetPizzaId,
+                StoreJoinDate = pizzastore.StoreJoinDate
+
                 
             };
         }
 
+        public static PizzaBoxDomain.Models.PizzaOrder Map (PizzaBoxDomain.Models.PizzaOrder pizzaorder) //Map(string username, string storename, float cost, int pid)
+        {
+            return new PizzaBoxDomain.Models.PizzaOrder()
+            {
+
+                Username = pizzaorder.Username,
+                Storename = pizzaorder.Storename,
+                Cost = pizzaorder.Cost,
+                PizzaOne = pizzaorder.PizzaOne,
+                PizzaTwo = pizzaorder.PizzaTwo, 
+
+                OrderDate = pizzaorder.OrderDate
+
+            };
+        }
+
+        public static PizzaBoxDomain.Models.Pizza Map(PizzaBoxDomain.Models.Pizza pizza)
+        {
+            return new PizzaBoxDomain.Models.Pizza()
+            {
+                Cost = pizza.Cost,
+                Crust = pizza.Crust,
+                Size = pizza.Size,
+                ExtraCheese = pizza.ExtraCheese,
+                Bacon = pizza.Bacon,
+                Pepperoni = pizza.Pepperoni,
+                Mozzerella = pizza.Mozzerella,
+                Sausage = pizza.Sausage,
+                Pineapple = pizza.Pineapple,
+                Onion = pizza.Onion,
+                Chicken = pizza.Chicken,
+                Pepper = pizza.Pepper
+            };
+        }
+
+
 
     }//class
-    }
+}

@@ -12,7 +12,7 @@ using PizzaBoxStoring;
 
 namespace PizzaBoxClient
 {
-    class PizzaBoxProgram : IAuthentication
+    class PizzaBoxProgram 
     {
         
        // static List<User> UserDataBase = new List<User>(); //What would eventually be a user database 
@@ -27,6 +27,11 @@ namespace PizzaBoxClient
             var repoStore = Dependencies.CreatePizzaStoreRepository();
             var PizzaStores = repoStore.GetPizzaStore();
 
+            var repoOrder = Dependencies.CreatePizzaOrderRepository();
+            var PizzaOrders = repoOrder.GetPizzaOrder();
+
+            var repoPizza = Dependencies.CreatePizzaPizza();
+            var Pizzas = repoPizza.GetPizza();
             
             Console.WriteLine("Database Connected\n");
 
@@ -53,6 +58,9 @@ namespace PizzaBoxClient
         Home:
             PizzaUsers = repo.GetPizzaUser();
             PizzaStores = repoStore.GetPizzaStore();
+            PizzaUser currentPizzaUser = null;
+            PizzaStore currentPizzaStore = null;
+
             SignOut:
             Console.WriteLine("Welcome to the PizzaBox Client \n Your Pie Awaits!");
             System.Threading.Thread.Sleep(1000);
@@ -92,6 +100,7 @@ namespace PizzaBoxClient
                                     if (st.Storename.Equals(storename) & (st.StorePassword.Equals(storepassword)))
                                     {
                                         Console.WriteLine($"Welcome back {st.Storename}");
+                                        currentPizzaStore = st;
 
                                         goto StoreSignedIn;
                                     }
@@ -201,7 +210,8 @@ namespace PizzaBoxClient
                                     if (pu.Username.Equals(username) & (pu.UserPassword.Equals(password)))
                                     {
                                         Console.WriteLine($"Welcome back {pu.FirstName}");
-
+                                        currentPizzaUser = pu;
+                                      
                                         goto UserSignedIn;
                                     }
 
@@ -302,27 +312,114 @@ namespace PizzaBoxClient
 
 
         UserSignedIn:
+        //StoreSignedIn:
             Console.WriteLine("Welcome Back. Lets Get Some Pizza");
             bool uLog = true;
-            while (uLog)
+        
+            
+            
+            while (uLog)    
             {
                 InvRes:
                 Console.WriteLine("Currently you can: \nView Pizza Locations : (View)\nSelect a Pizza Location: (Select <StoreName>)");
                 Console.WriteLine("Look at your Order History: (History)");
                 Console.WriteLine("Selecting a location will allow you to create an order");
+      
                 string ul1 = Console.ReadLine();
+                String[] splitul1 = ul1.Split(" ");
+                int lenUserArg = ul1.Length;
+
+                if (lenUserArg == 1) 
+                {
+                    switch (ul1)
+                    {
+
+                        case "View":
+                        //ViewLocations:
+                            Console.WriteLine("Here are list of spots to grab a pie!\n");
+                            PizzaStores = repoStore.GetPizzaStore();
+                            foreach (PizzaStore store in PizzaStores)
+                            {
+                                Console.Clear(); 
+                                Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
+                                Console.WriteLine("Press Enter to Continue");
+                                Console.ReadLine();
+                                Console.Clear();
+                                
+                            }
+                            goto InvRes;
+
+                        case "History":
+                            Console.Clear();
+                            Console.WriteLine("Viewing Your History\n");
+
+                            
+                            var history = repoOrder.GetPizzaOrderHistoryUser(currentPizzaUser.Username);
+                            foreach(var order in history)
+                            {
+                                //TODO fix in context to display pizza 
+                                Console.WriteLine($"Order: {order.Orderid,10} Store: {order.Storename,30} {order.Cost,40} {order.OrderDate,50} {order.PizzaOne}");
+                            }
+                            goto InvRes;
+
+                        case "Home":
+                            uLog = false;
+                            goto Home;
+
+                        default:
+                            Console.WriteLine("Invalid Input\n");
+                            goto InvRes;
+                    }
+
+                }
+                else if (lenUserArg == 2)// used for selecting a location 
+                {
+                    string statement = splitul1[0];
+                    string location = splitul1[1];
+
+                    if (statement.Equals("Select")){
+                        bool storeExist = false;
+                        foreach (PizzaStore store in PizzaStores)
+                        {
+                            if (store.Storename.Equals(location))
+                            {
+                                storeExist = true;
+                            }
+                        }
+                        switch (storeExist)
+                        {
+                            case true:
+                                goto UserStorePage;
+                            case false:
+                                goto InvRes;
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input\n"); 
+                        goto InvRes;
+                    }
+
+
+                }//else if 2 arguments 
+
+                else
+                {
+                    Console.WriteLine("Invalid Input:\n");
+                    goto InvRes;
+
+                }
 
 
             }
 
 
-
-
-
         StoreSignedIn:
+        UserStorePage:
         Console.WriteLine("Welcome Back. Lets Sell Some Pizzas");
 
-
+        
 
             /*
 
