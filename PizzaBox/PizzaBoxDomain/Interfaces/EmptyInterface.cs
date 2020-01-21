@@ -1,7 +1,16 @@
 ﻿using System;
 namespace PizzaBoxDomain.Interfaces
 {
-    public interface EmptyInterface
+    public interface IAuthentication
     {
+        void UniqueUser()
+        {
+
+        }
+
+        void UniqueStore()
+        {
+
+        }
     }
 }

@@ -5,6 +5,19 @@ namespace PizzaBoxDomain.Models
 {
     public partial class PizzaUser
     {
+
+        public PizzaUser(string a, string b, string c, string d, string e, string f, string g)
+        {
+            Username = a;
+            UserPassword = b;
+            FirstName = c;
+            LastName = d;
+            Cell = e;
+            UserAddress = f;
+            Email = g; 
+
+        }
+
         public PizzaUser()
         {
             PizzaOrder = new HashSet<PizzaOrder>();

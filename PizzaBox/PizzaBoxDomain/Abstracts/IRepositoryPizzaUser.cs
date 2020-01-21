@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace PizzaBoxDomain.Abstracts
 {
-    public abstract class AbstractUser
+    public interface IRepositoryPizzaUser<T>
     {
-        
+        IEnumerable<T> GetPizzaUser();
+        void AddPizzaUser(T pizzauser);
+        void ModifyPizzaUser(T pizzauser);
+        void RemovePizzaUser(string username);
     }
 }
