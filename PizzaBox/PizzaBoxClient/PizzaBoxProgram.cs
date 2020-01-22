@@ -14,13 +14,17 @@ namespace PizzaBoxClient
 {
     class PizzaBoxProgram 
     {
-        
-       // static List<User> UserDataBase = new List<User>(); //What would eventually be a user database 
-       // static List<Store> StoreDataBase = new List<Store>(); //What would eventually be a store database 
+
+        // static List<User> UserDataBase = new List<User>(); //What would eventually be a user database 
+        // static List<Store> StoreDataBase = new List<Store>(); //What would eventually be a store database 
 
         static void Main(string[] args)
         {
             Console.WriteLine("Hello");
+
+
+
+
             var repo = Dependencies.CreatePizzaUserRepository();
             var PizzaUsers = repo.GetPizzaUser();
 
@@ -32,8 +36,13 @@ namespace PizzaBoxClient
 
             var repoPizza = Dependencies.CreatePizzaPizza();
             var Pizzas = repoPizza.GetPizza();
-            
+
             Console.WriteLine("Database Connected\n");
+
+            foreach (PizzaStore store in PizzaStores)
+            {
+                Console.WriteLine(store.Storename + " " + store.PresetSpecial + " ! " + store.PresetPizzaId);
+            }
 
 
         //Store Test 
@@ -61,20 +70,23 @@ namespace PizzaBoxClient
             PizzaUser currentPizzaUser = null;
             PizzaStore currentPizzaStore = null;
 
-            SignOut:
+            string storeChoice = null;
+
+        SignOut:
             Console.WriteLine("Welcome to the PizzaBox Client \n Your Pie Awaits!");
             System.Threading.Thread.Sleep(1000);
             Console.WriteLine("Are you a 'User' or a 'Store' ?\n");
-            res1:
+        res1:
             string type = Console.ReadLine();
+
 
             // Authenticated Loggin or Sign Up 
             switch (type)
             {
                 case "Store":
-                    StoreLogin:
+                StoreLogin:
                     Console.WriteLine("Hello Store");
-                    res1Store:
+                res1Store:
                     Console.WriteLine("Login or Sign Up");
                     string res1Store = Console.ReadLine();
                     switch (res1Store)
@@ -133,7 +145,7 @@ namespace PizzaBoxClient
                             string su4 = Console.ReadLine();
                             Console.WriteLine();
 
-                            res2Store:
+                        res2Store:
                             Console.WriteLine("Is This Information Correct? ");
                             Console.WriteLine("Store Name: " + su1);
                             Console.WriteLine("Password: " + su2);
@@ -147,8 +159,8 @@ namespace PizzaBoxClient
                             {
                                 case "Yes":
 
-                                    PizzaStore temp = new PizzaStore(su1, su2, su3,su4);
-                                    repoStore.AddPizzaStore(temp); 
+                                    PizzaStore temp = new PizzaStore(su1, su2, su3, su4);
+                                    repoStore.AddPizzaStore(temp);
 
                                     Console.WriteLine("Thank You for Registering Your Store on PizzaBox");
                                     goto Home;
@@ -175,16 +187,16 @@ namespace PizzaBoxClient
 
                         default:
                             Console.WriteLine("Invalid Responce\n");
-                            goto StoreLogin; 
+                            goto StoreLogin;
 
                     }
-                    
 
-                
+
+
 
 
                 case "User":
-                    TypeUser:
+                TypeUser:
                     Console.WriteLine("'Login' or 'Sign Up'");
                     string res1User = Console.ReadLine();
                     switch (res1User)
@@ -211,7 +223,7 @@ namespace PizzaBoxClient
                                     {
                                         Console.WriteLine($"Welcome back {pu.FirstName}");
                                         currentPizzaUser = pu;
-                                      
+
                                         goto UserSignedIn;
                                     }
 
@@ -223,11 +235,11 @@ namespace PizzaBoxClient
 
                             }
                             Console.WriteLine("No Matching User Name or Password");
-                            goto TypeUser; 
+                            goto TypeUser;
 
 
                         case "Sign Up":
-                            UserSignUp:
+                        UserSignUp:
                             Console.WriteLine("Welcome Please Fill Out Your Information \n");
 
                             Console.Write("Username: ");
@@ -268,10 +280,10 @@ namespace PizzaBoxClient
                             switch (resSignUpUser)
                             {
                                 case "Yes":
-                                    
 
-                                    PizzaUser temp = new PizzaUser(su1,su2,su3,su4,su5,su6,su7);
-                                   
+
+                                    PizzaUser temp = new PizzaUser(su1, su2, su3, su4, su5, su6, su7);
+
                                     repo.AddPizzaUser(temp);
                                     Console.WriteLine("Thanks For Signing Up!");
                                     goto Home;
@@ -291,7 +303,7 @@ namespace PizzaBoxClient
                             }
 
 
-                        
+
 
                         case "Home":
                             goto Home;
@@ -303,120 +315,166 @@ namespace PizzaBoxClient
 
                     }
 
-            
+
 
                 default: //Outer Default for Type
                     Console.WriteLine("Invalid Input");
-                    goto Home; 
+                    goto Home;
             }
 
 
         UserSignedIn:
-        //StoreSignedIn:
             Console.WriteLine("Welcome Back. Lets Get Some Pizza");
-            bool uLog = true;
-        
-            
-            
-            while (uLog)    
+
+        InvRes:
+            Console.WriteLine("Currently you can: \nView Pizza Locations : (View)\nSelect a Pizza Location: (Select) ");
+            Console.WriteLine("Look at your Order History: (History)");
+            Console.WriteLine("Selecting a location will allow you to create an order");
+            string ul1 = Console.ReadLine();
+
+
+            if (ul1.Equals("View")) {
+                //ViewLocations:
+                Console.WriteLine("Here are list of spots to grab a pie!\n");
+
+                PizzaStores = repoStore.GetPizzaStore();
+
+                foreach (PizzaStore store in PizzaStores)
+                {
+                    //Console.Clear();
+                    Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
+                    //Console.Clear();
+
+                }
+                Console.WriteLine();
+                goto InvRes;
+            }
+            if (ul1.Equals("History")) {
+                Console.Clear();
+                Console.WriteLine("Viewing Your Order History\n");
+
+
+                var history = repoOrder.GetPizzaOrderHistoryUser(currentPizzaUser.Username);
+                foreach (var order in history)
+                {
+                    //TODO fix in context to display pizza 
+                    Console.WriteLine($"Order: {order.Orderid,10} Store: {order.Storename,30} {order.Cost,40} {order.OrderDate,50} {order.PizzaOne}");
+                }
+                goto InvRes;
+            }
+            if (ul1.Equals("Home")) {
+                Console.WriteLine("Logging Out\n");
+                goto Home;
+            }
+            if (ul1.Equals("Select"))
             {
-                InvRes:
-                Console.WriteLine("Currently you can: \nView Pizza Locations : (View)\nSelect a Pizza Location: (Select <StoreName>)");
-                Console.WriteLine("Look at your Order History: (History)");
-                Console.WriteLine("Selecting a location will allow you to create an order");
-      
-                string ul1 = Console.ReadLine();
-                String[] splitul1 = ul1.Split(" ");
-                int lenUserArg = ul1.Length;
-
-                if (lenUserArg == 1) 
+                Console.WriteLine("What PizzaStore would you like to order from ? ");
+                foreach (PizzaStore store in PizzaStores)
                 {
-                    switch (ul1)
-                    {
-
-                        case "View":
-                        //ViewLocations:
-                            Console.WriteLine("Here are list of spots to grab a pie!\n");
-                            PizzaStores = repoStore.GetPizzaStore();
-                            foreach (PizzaStore store in PizzaStores)
-                            {
-                                Console.Clear(); 
-                                Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
-                                Console.WriteLine("Press Enter to Continue");
-                                Console.ReadLine();
-                                Console.Clear();
-                                
-                            }
-                            goto InvRes;
-
-                        case "History":
-                            Console.Clear();
-                            Console.WriteLine("Viewing Your History\n");
-
-                            
-                            var history = repoOrder.GetPizzaOrderHistoryUser(currentPizzaUser.Username);
-                            foreach(var order in history)
-                            {
-                                //TODO fix in context to display pizza 
-                                Console.WriteLine($"Order: {order.Orderid,10} Store: {order.Storename,30} {order.Cost,40} {order.OrderDate,50} {order.PizzaOne}");
-                            }
-                            goto InvRes;
-
-                        case "Home":
-                            uLog = false;
-                            goto Home;
-
-                        default:
-                            Console.WriteLine("Invalid Input\n");
-                            goto InvRes;
-                    }
+                    //Console.Clear();
+                    Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
+                    //Console.Clear();
 
                 }
-                else if (lenUserArg == 2)// used for selecting a location 
+                Console.WriteLine();
+                string location = Console.ReadLine();
+                bool storeExist = false;
+                foreach (PizzaStore store in PizzaStores)
                 {
-                    string statement = splitul1[0];
-                    string location = splitul1[1];
-
-                    if (statement.Equals("Select")){
-                        bool storeExist = false;
-                        foreach (PizzaStore store in PizzaStores)
-                        {
-                            if (store.Storename.Equals(location))
-                            {
-                                storeExist = true;
-                            }
-                        }
-                        switch (storeExist)
-                        {
-                            case true:
-                                goto UserStorePage;
-                            case false:
-                                goto InvRes;
-
-                        }
-                    }
-                    else
+                    if (store.Storename.Equals(location))
                     {
-                        Console.WriteLine("Invalid Input\n"); 
+                        storeExist = true;
+
+                    }
+                }
+
+                switch (storeExist)
+                {
+                    case true:
+                        storeChoice = location;
+                        goto UserStorePage;
+
+                    case false:
+                        Console.WriteLine("Location Does Not Exist");
                         goto InvRes;
-                    }
-
-
-                }//else if 2 arguments 
-
-                else
-                {
-                    Console.WriteLine("Invalid Input:\n");
-                    goto InvRes;
 
                 }
 
 
+            }//Select
+            else
+            {
+                Console.WriteLine("Invalid Input\n");
+                goto InvRes;
             }
 
 
-        StoreSignedIn:
+
+
+
         UserStorePage:
+        startOrder:
+            Console.Clear();
+            Console.WriteLine("Your store choice =  " + storeChoice);
+            Console.WriteLine("Would you like to start an order");
+            //Console.WriteLine(storeChoice);
+            //Console.WriteLine("Note: Starting and order adds you to Store's Account");
+            Console.WriteLine("'Yes' or 'No' ");
+            string resStartOrder = Console.ReadLine();
+            if (resStartOrder.Equals("Yes"))
+            {
+                //Console.Clear();
+                Console.WriteLine("Lets take a look at the menus");
+                foreach (var pizzastore in PizzaStores)
+                {
+                    if (pizzastore.Storename.Equals(storeChoice))
+                    {
+                        Console.WriteLine("GOT HERE ! ");
+
+                        string specialpizza = (pizzastore.PresetSpecial);
+                        Console.WriteLine("THE PRESET SPECIAL IS " + specialpizza);
+
+                        Console.WriteLine("GOT HERE SECOND TIME");
+                        if (specialpizza.Length > 1)
+                        {
+                            Console.WriteLine($"The house special pizza is {specialpizza}");
+                            Console.WriteLine("Would you like to add this to your order? Yes or No");
+                            string resPresetPizza = Console.ReadLine();
+
+
+
+
+
+
+                        }
+                    }
+                }
+
+            }
+            if (resStartOrder.Equals("No"))
+            {
+                goto UserSignedIn;
+            }
+            else
+            {
+                Console.WriteLine("Invalid Response");
+                goto startOrder;
+            }//NOT Starting Order 
+
+
+
+        StoreSignedIn:
+
+     
+           
+            Console.WriteLine();
+            
+
+            //in the database this instead could be the unique key or UUID 
+            
+
+
+        
         Console.WriteLine("Welcome Back. Lets Sell Some Pizzas");
 
         

@@ -18,7 +18,10 @@ namespace PizzaBoxStoring
                 Cell = pizzauser.Cell,
                 UserAddress = pizzauser.UserAddress,
                 Email = pizzauser.Email,
-                UserJoinDate = pizzauser.UserJoinDate
+                UserJoinDate = pizzauser.UserJoinDate,
+                LastOrderTime = pizzauser.LastOrderTime,
+                LastOrderStore = pizzauser.LastOrderStore
+                
                
 
             };
@@ -32,9 +35,10 @@ namespace PizzaBoxStoring
                 StorePassword = pizzastore.StorePassword,
                 Cell = pizzastore.Cell,
                 StoreAddress = pizzastore.StoreAddress,
-                PresetPizza = pizzastore.PresetPizza,
+                PresetSpecial = pizzastore.PresetSpecial,
                 PresetPizzaId = pizzastore.PresetPizzaId,
                 StoreJoinDate = pizzastore.StoreJoinDate
+                
 
                 
             };

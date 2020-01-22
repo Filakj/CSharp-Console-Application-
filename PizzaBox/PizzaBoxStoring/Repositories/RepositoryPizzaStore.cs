@@ -38,7 +38,13 @@ namespace PizzaBoxStoring.Repositories
         }
 
 
-
+        public IEnumerable<PizzaStore> getSpecial(string storename)
+        {
+            var query = from e in db.PizzaStore
+                        where e.Storename.Equals(storename)
+                        select e.PresetPizza;
+            return (System.Collections.Generic.IEnumerable<PizzaBoxDomain.Models.PizzaStore>)query; 
+        }
 
 
         public IEnumerable<PizzaStore> GetPizzaStore()
