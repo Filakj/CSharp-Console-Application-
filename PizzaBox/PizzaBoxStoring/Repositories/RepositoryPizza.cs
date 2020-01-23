@@ -43,16 +43,18 @@ namespace PizzaBoxStoring.Repositories
 
 
 
-        public IEnumerable<int> getLastPizza()
+        public int GetLastPizza()
         {
-            var query = from p in db.Pizza
-                        orderby p.Pid descending 
-                        select (p.Pid);
+            var query = (from p in db.Pizza
+                       orderby p.Pid descending
+          
+                       select p.Pid).Take(1);
 
-                return query;
-                        
+            int result = query.FirstOrDefault();
 
+            return result;
         }
+
 
 
 
@@ -71,5 +73,7 @@ namespace PizzaBoxStoring.Repositories
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

@@ -39,12 +39,12 @@ namespace PizzaBoxClient
 
             Console.WriteLine("Database Connected\n");
 
-            /*
-            foreach (PizzaStore store in PizzaStores)
-            {
-                Console.WriteLine(store.Storename + " " + store.PresetSpecial + " ! " + store.PresetPizzaId);
-            }
-            */
+        /*
+        foreach (PizzaStore store in PizzaStores)
+        {
+            Console.WriteLine(store.Storename + " " + store.PresetSpecial + " ! " + store.PresetPizzaId);
+        }
+        */
 
         //Store Test 
         /*
@@ -74,9 +74,12 @@ namespace PizzaBoxClient
             string storeChoice = null;
 
         SignOut:
+            Console.Clear();
+            Console.WriteLine("-----------------------------------------------------------------------");
             Console.WriteLine("Welcome to the PizzaBox Client \n Your Pie Awaits!");
             System.Threading.Thread.Sleep(1000);
             Console.WriteLine("Are you a 'User' or a 'Store' ?\n");
+            Console.WriteLine("-----------------------------------------------------------------------");
         res1:
             string type = Console.ReadLine();
 
@@ -424,17 +427,20 @@ namespace PizzaBoxClient
             string resStartOrder = Console.ReadLine();
             if (resStartOrder.Equals("Yes"))
             {
+
                 PizzaOrder TempOrder = new PizzaOrder();
                 TempOrder.Username = currentPizzaUser.Username;
-                TempOrder.Storename = currentPizzaStore.Storename;
-
+                TempOrder.Storename = storeChoice;
+                int storeSpecialID;
                 //Console.Clear();
                 Console.WriteLine("Lets take a look at the menus");
                 foreach (var pizzastore in PizzaStores)
                 {
                     if (pizzastore.Storename.Equals(storeChoice))
                     {
-                       // Console.WriteLine("GOT HERE ! ");
+                        storeSpecialID = (int)pizzastore.PresetPizzaId;
+
+                        // Console.WriteLine("GOT HERE ! ");
 
                         string specialpizza = (pizzastore.PresetSpecial);
                         //Console.WriteLine("THE PRESET SPECIAL IS " + specialpizza);
@@ -442,37 +448,38 @@ namespace PizzaBoxClient
                         //Console.WriteLine("GOT HERE SECOND TIME");
                         if (specialpizza.Length > 1)
                         {
-                            wantSpecial:
+                        wantSpecial:
                             Console.WriteLine($"The house special pizza is {specialpizza}");
                             Console.WriteLine("Would you like to add this to your order? Yes or No");
                             string resPresetPizza = Console.ReadLine();
                             switch (resPresetPizza)
                             {
                                 case "Yes":
-                                    //get pizza by id and get cost and ad to order 
-                                    TempOrder.PizzaOne = (int)currentPizzaStore.PresetPizzaId;
-                                    foreach(Pizza pizza in Pizzas)
+                                    //get pizza by id and get cost and ad to order
+
+                                    TempOrder.PizzaOne = storeSpecialID;
+                                    foreach (Pizza pizza in Pizzas)
                                     {
-                                        if(pizza.Pid == currentPizzaStore.PresetPizzaId)
+                                        if (pizza.Pid == storeSpecialID)
                                         {
-                                            TempOrder.Cost += pizza.Cost;
+                                            TempOrder.Cost = TempOrder.Cost + pizza.Cost;
                                         }
                                     }
-                                    
-                                    inResCont:
+
+                                inResCont:
                                     Console.Clear();
-                                    Console.WriteLine("Your Current Total is: " + TempOrder.Cost);
+                                    Console.WriteLine("Your Current Total Is: " + TempOrder.Cost);
                                     Console.WriteLine("Would you like to continue order with a custom Pizza? Yes or No");
-                                    string resContinue =  Console.ReadLine();
-                                    switch(resContinue){
+                                    string resContinue = Console.ReadLine();
+                                    switch (resContinue) {
                                         case "Yes":
                                             Pizza tempPizza = new Pizza();
                                         createCustom:
                                             //Create Custom Pizza and Add it
-                                            
+
                                             Console.Clear();
                                             Console.WriteLine("What kind of crust would you like:");
-                                            String[] crusts = {"Regular","Thin","Deep Dish","Stuffed"};
+                                            String[] crusts = { "Regular", "Thin", "Deep Dish", "Stuffed" };
                                             String[] sizes = { "Small", "Medium", "Large", "X-Large" };
 
                                             foreach (String crust in crusts)
@@ -515,7 +522,7 @@ namespace PizzaBoxClient
                                                     goto createCustom;
                                             }
                                             Console.Clear();
-                                            Toppings:
+                                        Toppings:
                                             Console.WriteLine("Add up to three toppings");
                                             bool x = true;
                                             int toppings = 0;
@@ -532,7 +539,7 @@ namespace PizzaBoxClient
                                             {
                                                 Console.WriteLine("Extra Cheese? Yes or No");
                                                 string cheese = Console.ReadLine();
-                                                if (cheese.Equals("Yes")){
+                                                if (cheese.Equals("Yes")) {
                                                     tempPizza.ExtraCheese = 1;
                                                     toppings++;
                                                 }
@@ -577,7 +584,7 @@ namespace PizzaBoxClient
                                                 string moz = Console.ReadLine();
                                                 if (moz.Equals("Yes"))
                                                 {
-                                                    tempPizza.Mozzerella= 1;
+                                                    tempPizza.Mozzerella = 1;
                                                     toppings++;
                                                 }
                                                 if (moz.Equals("No"))
@@ -639,7 +646,7 @@ namespace PizzaBoxClient
                                                 string chi = Console.ReadLine();
                                                 if (chi.Equals("Yes"))
                                                 {
-                                                    tempPizza.Chicken= 1;
+                                                    tempPizza.Chicken = 1;
                                                     toppings++;
                                                 }
                                                 if (chi.Equals("No"))
@@ -668,12 +675,12 @@ namespace PizzaBoxClient
 
 
 
-                                                if(toppings > 3)
+                                                if (toppings > 3)
                                                 {
                                                     Console.WriteLine("TOO MANY TOPPINGS ! CHOOSE TOPPINGS AGAIN");
                                                     goto Toppings;
                                                 }
-                                                if(toppings < 4)
+                                                if (toppings < 4)
                                                 {
                                                     x = false;
                                                 }
@@ -684,34 +691,35 @@ namespace PizzaBoxClient
                                             }//while
 
                                             tempPizza.Cost = (decimal)tempPizza.ComputePrice(toppings);
+                                            TempOrder.Cost += tempPizza.Cost;
+
+                                            repoPizza = Dependencies.CreatePizzaPizza();
                                             repoPizza.AddPizza(tempPizza);
                                             Pizzas = repoPizza.GetPizza();
-                                            
-                                            foreach(Pizza p in Pizzas)
-                                            {
 
-                                            }
-                                            Console.WriteLine("Ok");
-                                            //final pizza and add to order
-                                           //pi
-                                            //TempOrder.
+                                            int newID = repoPizza.GetLastPizza();
+                                            TempOrder.PizzaTwo = Convert.ToInt32(newID);
+                                            Console.Clear();
+                                        SubmitO:
+                                            Console.WriteLine($"So your total is {TempOrder.Cost}");
+                                            Console.WriteLine("Would you like to confirm and place your order? Yes or No?");
+                                            string placeOrder = Console.ReadLine();
 
-
-                                            break;
-                                        case "No":
-                                        NoMore:
-                                            Console.WriteLine("Confirm Order? Yes or No");
-                                            Console.WriteLine("'No' will discard your order");
-                                            string endOrder = Console.ReadLine();
-                                            switch (endOrder)
+                                            switch (placeOrder)
                                             {
                                                 case "Yes":
-
-
+                                                    Console.Clear();
                                                     repoOrder.AddPizzaOrder(TempOrder);
-                                                    //TODO in API update so order does not get posted if it is alread there 
-                                                    goto Home;
-                                                    
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    Console.WriteLine("Done");
+                                                    Console.WriteLine("Your Pizza Should Arrive in 30 Minutes or Less");
+                                                    goto UserSignedIn;
+
 
                                                 case "No":
                                                     Console.WriteLine("The Pizza Didnt Want You Either!");
@@ -725,6 +733,50 @@ namespace PizzaBoxClient
                                                     Console.WriteLine("Done");
                                                     System.Threading.Thread.Sleep(3000);
                                                     Console.Clear();
+                                                    goto UserSignedIn;
+                                                default:
+                                                    Console.WriteLine("Invalid Input");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    goto SubmitO;
+                                            }
+
+
+
+
+                                        case "No":
+                                        NoMore:
+                                            Console.WriteLine("Confirm Order? Yes or No");
+                                            Console.WriteLine("'No' will discard your order");
+                                            string endOrder = Console.ReadLine();
+                                            switch (endOrder)
+                                            {
+                                                case "Yes":
+
+
+                                                    repoOrder.AddPizzaOrder(TempOrder);
+                                                    //TODO in API update so order does not get posted if it is alread there 
+                                                    Console.WriteLine("Your pizza is being crafted as we speak");
+                                                    Console.WriteLine("The pizza will be delievered in 30 mins or less");
+                                                    System.Threading.Thread.Sleep(3000);
+
+                                                    goto UserSignedIn;
+
+
+                                                case "No":
+                                                Discarding:
+                                                    Console.WriteLine("The Pizza Didnt Want You Either!");
+                                                    Console.WriteLine("Discarding Order");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    Console.WriteLine("Done");
+                                                    Console.WriteLine("Taking You back to the User Homepage");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Clear();
+
                                                     goto UserSignedIn;
 
                                                 default:
@@ -741,33 +793,37 @@ namespace PizzaBoxClient
                                             System.Threading.Thread.Sleep(3000);
                                             goto inResCont;
                                     }
-                                    
+
                                     break;
 
                                 case "No":
+                                    goto strrtCustom;
                                     break;
 
 
                                 default:
                                     Console.WriteLine("Invalid Response\n");
-                                  
+
                                     goto wantSpecial;
 
                             }
                         }
                         else
                         {
-
+                        resStartOrder1:
                             Console.WriteLine("This store has no special! Lets customize a pizza for you!");
-                            //TODO ORder Custom Pizza 
-                            
+                            goto strrtCustom;// Make Custom 
+
                         }
 
-                        
+
 
                     }
                 }
-           
+            strrtCustom:
+                Console.WriteLine();
+                Console.Clear();
+
             }
             if (resStartOrder.Equals("No"))
             {
@@ -778,31 +834,49 @@ namespace PizzaBoxClient
                 Console.WriteLine("Invalid Response");
                 goto startOrder;
             }//NOT Starting Order
-       
+
+        
+
+
+
         StoreSignedIn:
-
-     
-        
+            Console.Clear();
             Console.WriteLine();
-        
-        Console.WriteLine("Welcome Back. Lets Sell Some Pizzas");
+            Console.WriteLine("-----------------------------------------------------------------------");
+            Console.WriteLine("Welcome Back. Lets Sell Some Pizzas\n");
+            Console.WriteLine("Currently you can: \nView Compleyed Orders: (Orders)\nView Sales: (Sales) ");
+            Console.WriteLine("Look at your customers: (Users)");
+            Console.WriteLine("-----------------------------------------------------------------------");
 
-        
-
-/*
-//---------------------------------Store View  ------------------------
-#region StoreClient
-StoreLogged:
-Console.WriteLine("Store Logged In");
-bool sLOG = true;
-while (sLOG)
-{
-
-}
-#endregion Store Client
-*/
+            string sl1 = Console.ReadLine();
+            switch (sl1)
+            {
+                case("Orders"):
+                    Console.WriteLine("Lets view those completed Orders");
+                    break;
 
 
+                case ("Sales"):
+                    break;
+
+                case ("Users"):
+                    break;
+
+
+
+                default:
+                    Console.WriteLine("Invalid Input");
+                    System.Threading.Thread.Sleep(3000);
+                    goto StoreSignedIn;
+                   
+
+            }
+
+
+
+        Logout:
+            Console.Clear();
+            Console.WriteLine("Thank You For Using PizzaBox\n Have a pie day! ");
 
         }//Main 
     }//Class 

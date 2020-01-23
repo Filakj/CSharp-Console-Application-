@@ -9,7 +9,7 @@ namespace PizzaBoxDomain.Abstracts
 
         IEnumerable<T> GetPizza();
         void AddPizza(T pizza);
-
+        int GetLastPizza();
         void ModifyPizza(T pizza);
         void RemovePizza(int pid);
 
