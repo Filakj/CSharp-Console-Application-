@@ -48,6 +48,53 @@ namespace PizzaBoxDomain.Models
         public virtual ICollection<PizzaOrder> PizzaOrderPizzaThreeNavigation { get; set; }
         public virtual ICollection<PizzaOrder> PizzaOrderPizzaTwoNavigation { get; set; }
         public virtual ICollection<PizzaStore> PizzaStore { get; set; }
+
+        public float ComputePrice(int numToppings)
+        {
+            float price;
+
+            float baseCost = 10.00f;
+
+            float costMultiplier = 1.0f;
+
+            switch (this.Crust)
+            {
+                case "Deep Dish":
+                    costMultiplier += 0.2f;
+                    break;
+                case "Thin":
+                    costMultiplier += 0.1f;
+                    break;
+                case "Stuffed":
+                    costMultiplier += 0.3f;
+                    break;
+
+            }// crust
+
+
+            switch (this.Size)
+            {
+                case "Medium":
+                    costMultiplier += 0.1f;
+                    break;
+                case "Large":
+                    costMultiplier += 0.2f;
+                    break;
+                case "X-Large":
+                    costMultiplier += 0.3f;
+                    break;
+            }//size
+
+            //each topic is one dollar
+            baseCost += (float)numToppings;
+
+
+            price = costMultiplier * baseCost;
+            return price;
+
+        }//compute price 
+
+
     }
 }
 
@@ -130,46 +177,7 @@ namespace PizzaBoxDomain
         }
 
         // Compute Price
-        public float ComputePrice() {
 
-            float costMultiplier = 1.0f;
-
-            switch (this.crust)
-            {
-                case "Deep Dish":
-                    costMultiplier += 0.2f; 
-                    break;
-                case "Thin":
-                    costMultiplier += 0.1f;
-                    break;
-                case "Stuffed":
-                    costMultiplier += 0.3f;
-                    break;
-               
-            }// crust
-
-
-            switch (this.size)
-            {
-                case "Medium":
-                    costMultiplier += 0.1f;
-                    break;
-                case "Large":
-                    costMultiplier += 0.2f;
-                    break;
-                case "X-Large":
-                    costMultiplier += 0.3f;
-                    break;
-            }//size
-
-            //each topic is one dollar
-            this.baseCost += (float)this.numToppings; 
-            
-
-            this.price = costMultiplier * this.baseCost;
-            return this.price; 
-
-        }//compute price 
 
 
 

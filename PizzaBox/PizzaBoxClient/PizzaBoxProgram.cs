@@ -39,11 +39,12 @@ namespace PizzaBoxClient
 
             Console.WriteLine("Database Connected\n");
 
+            /*
             foreach (PizzaStore store in PizzaStores)
             {
                 Console.WriteLine(store.Storename + " " + store.PresetSpecial + " ! " + store.PresetPizzaId);
             }
-
+            */
 
         //Store Test 
         /*
@@ -423,33 +424,350 @@ namespace PizzaBoxClient
             string resStartOrder = Console.ReadLine();
             if (resStartOrder.Equals("Yes"))
             {
+                PizzaOrder TempOrder = new PizzaOrder();
+                TempOrder.Username = currentPizzaUser.Username;
+                TempOrder.Storename = currentPizzaStore.Storename;
+
                 //Console.Clear();
                 Console.WriteLine("Lets take a look at the menus");
                 foreach (var pizzastore in PizzaStores)
                 {
                     if (pizzastore.Storename.Equals(storeChoice))
                     {
-                        Console.WriteLine("GOT HERE ! ");
+                       // Console.WriteLine("GOT HERE ! ");
 
                         string specialpizza = (pizzastore.PresetSpecial);
-                        Console.WriteLine("THE PRESET SPECIAL IS " + specialpizza);
+                        //Console.WriteLine("THE PRESET SPECIAL IS " + specialpizza);
 
-                        Console.WriteLine("GOT HERE SECOND TIME");
+                        //Console.WriteLine("GOT HERE SECOND TIME");
                         if (specialpizza.Length > 1)
                         {
+                            wantSpecial:
                             Console.WriteLine($"The house special pizza is {specialpizza}");
                             Console.WriteLine("Would you like to add this to your order? Yes or No");
                             string resPresetPizza = Console.ReadLine();
+                            switch (resPresetPizza)
+                            {
+                                case "Yes":
+                                    //get pizza by id and get cost and ad to order 
+                                    TempOrder.PizzaOne = (int)currentPizzaStore.PresetPizzaId;
+                                    foreach(Pizza pizza in Pizzas)
+                                    {
+                                        if(pizza.Pid == currentPizzaStore.PresetPizzaId)
+                                        {
+                                            TempOrder.Cost += pizza.Cost;
+                                        }
+                                    }
+                                    
+                                    inResCont:
+                                    Console.Clear();
+                                    Console.WriteLine("Your Current Total is: " + TempOrder.Cost);
+                                    Console.WriteLine("Would you like to continue order with a custom Pizza? Yes or No");
+                                    string resContinue =  Console.ReadLine();
+                                    switch(resContinue){
+                                        case "Yes":
+                                            Pizza tempPizza = new Pizza();
+                                        createCustom:
+                                            //Create Custom Pizza and Add it
+                                            
+                                            Console.Clear();
+                                            Console.WriteLine("What kind of crust would you like:");
+                                            String[] crusts = {"Regular","Thin","Deep Dish","Stuffed"};
+                                            String[] sizes = { "Small", "Medium", "Large", "X-Large" };
+
+                                            foreach (String crust in crusts)
+                                            {
+                                                Console.WriteLine(crust);
+                                            }
+                                            string crustChoice = Console.ReadLine();
+                                            switch (crustChoice)
+                                            {
+                                                case "Regular":
+                                                case "Thin":
+                                                case "Deep Dish":
+                                                case "Stuffed":
+                                                    tempPizza.Crust = crustChoice;
+                                                    break;
+                                                default:
+                                                    Console.WriteLine("Invalid Input");
+                                                    System.Threading.Thread.Sleep(2000);
+                                                    goto createCustom;
+                                            }
+                                        pickSize:
+                                            Console.Clear();
+                                            Console.WriteLine("What size pizza would you like?");
+                                            foreach (String size in sizes)
+                                            {
+                                                Console.WriteLine(size);
+                                            }
+                                            string sizeChoice = Console.ReadLine();
+                                            switch (sizeChoice)
+                                            {
+                                                case "Small":
+                                                case "Medium":
+                                                case "Large":
+                                                case "X-Large":
+                                                    tempPizza.Size = sizeChoice;
+                                                    break;
+                                                default:
+                                                    Console.WriteLine("Invalid Input");
+                                                    System.Threading.Thread.Sleep(2000);
+                                                    goto createCustom;
+                                            }
+                                            Console.Clear();
+                                            Toppings:
+                                            Console.WriteLine("Add up to three toppings");
+                                            bool x = true;
+                                            int toppings = 0;
+                                            tempPizza.Pepper = 0;
+                                            tempPizza.ExtraCheese = 0;
+                                            tempPizza.Bacon = 0;
+                                            tempPizza.Mozzerella = 0;
+                                            tempPizza.Pepperoni = 0;
+                                            tempPizza.Sausage = 0;
+                                            tempPizza.Pineapple = 0;
+                                            tempPizza.Onion = 0;
+                                            tempPizza.Chicken = 0;
+                                            while (x)
+                                            {
+                                                Console.WriteLine("Extra Cheese? Yes or No");
+                                                string cheese = Console.ReadLine();
+                                                if (cheese.Equals("Yes")){
+                                                    tempPizza.ExtraCheese = 1;
+                                                    toppings++;
+                                                }
+                                                else if (cheese.Equals("No"))
+                                                {
+                                                    tempPizza.ExtraCheese = 0;
+                                                }
+                                                else {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Bacon? Yes or No");
+                                                string bacon = Console.ReadLine();
+                                                if (bacon.Equals("Yes"))
+                                                {
+                                                    tempPizza.Bacon = 1;
+                                                    toppings++;
+                                                }
+                                                if (bacon.Equals("No"))
+                                                {
+                                                    tempPizza.Bacon = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Pepperoni? Yes or No");
+                                                string pepe = Console.ReadLine();
+                                                if (pepe.Equals("Yes"))
+                                                {
+                                                    tempPizza.Pepperoni = 1;
+                                                    toppings++;
+                                                }
+                                                if (pepe.Equals("No"))
+                                                {
+                                                    tempPizza.Pepperoni = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Mozzerella? Yes or No");
+                                                string moz = Console.ReadLine();
+                                                if (moz.Equals("Yes"))
+                                                {
+                                                    tempPizza.Mozzerella= 1;
+                                                    toppings++;
+                                                }
+                                                if (moz.Equals("No"))
+                                                {
+                                                    tempPizza.Mozzerella = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Sausage? Yes or No");
+                                                string sau = Console.ReadLine();
+                                                if (sau.Equals("Yes"))
+                                                {
+                                                    tempPizza.Sausage = 1;
+                                                    toppings++;
+                                                }
+                                                if (sau.Equals("No"))
+
+                                                {
+                                                    tempPizza.Sausage = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Pineapple? Yes or No");
+                                                string pine = Console.ReadLine();
+
+                                                if (pine.Equals("Yes"))
+                                                {
+                                                    tempPizza.Pineapple = 1;
+                                                    toppings++;
+                                                }
+                                                if (pine.Equals("No"))
+                                                {
+                                                    tempPizza.Pineapple = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Onions? Yes or No");
+                                                string oni = Console.ReadLine();
+                                                if (oni.Equals("Yes"))
+                                                {
+                                                    tempPizza.Onion = 1;
+                                                    toppings++;
+                                                }
+                                                if (oni.Equals("No"))
+                                                {
+                                                    tempPizza.Onion = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Chicken? Yes or No");
+                                                string chi = Console.ReadLine();
+                                                if (chi.Equals("Yes"))
+                                                {
+                                                    tempPizza.Chicken= 1;
+                                                    toppings++;
+                                                }
+                                                if (chi.Equals("No"))
+                                                {
+                                                    tempPizza.Chicken = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+                                                Console.WriteLine("Peppers? Yes or No");
+                                                string pep = Console.ReadLine();
+                                                if (cheese.Equals("Yes"))
+                                                {
+                                                    tempPizza.Pepper = 1;
+                                                    toppings++;
+                                                }
+                                                if (pep.Equals("No"))
+                                                {
+                                                    tempPizza.Pepper = 0;
+                                                }
+                                                else
+                                                {
+                                                    goto Toppings;
+                                                }
+
+
+
+                                                if(toppings > 3)
+                                                {
+                                                    Console.WriteLine("TOO MANY TOPPINGS ! CHOOSE TOPPINGS AGAIN");
+                                                    goto Toppings;
+                                                }
+                                                if(toppings < 4)
+                                                {
+                                                    x = false;
+                                                }
 
 
 
 
+                                            }//while
+
+                                            tempPizza.Cost = (decimal)tempPizza.ComputePrice(toppings);
+                                            repoPizza.AddPizza(tempPizza);
+                                            Pizzas = repoPizza.GetPizza();
+                                            
+                                            foreach(Pizza p in Pizzas)
+                                            {
+
+                                            }
+                                            Console.WriteLine("Ok");
+                                            //final pizza and add to order
+                                           //pi
+                                            //TempOrder.
 
 
+                                            break;
+                                        case "No":
+                                        NoMore:
+                                            Console.WriteLine("Confirm Order? Yes or No");
+                                            Console.WriteLine("'No' will discard your order");
+                                            string endOrder = Console.ReadLine();
+                                            switch (endOrder)
+                                            {
+                                                case "Yes":
+
+
+                                                    repoOrder.AddPizzaOrder(TempOrder);
+                                                    //TODO in API update so order does not get posted if it is alread there 
+                                                    goto Home;
+                                                    
+
+                                                case "No":
+                                                    Console.WriteLine("The Pizza Didnt Want You Either!");
+                                                    Console.WriteLine("Discarding Order");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Write(".");
+                                                    Console.WriteLine("Done");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    Console.Clear();
+                                                    goto UserSignedIn;
+
+                                                default:
+                                                    Console.WriteLine("Invalid Response\n");
+                                                    System.Threading.Thread.Sleep(3000);
+                                                    goto NoMore;
+                                            }
+
+
+
+                                            break;
+                                        default:
+                                            Console.WriteLine("Invalid Responce\n");
+                                            System.Threading.Thread.Sleep(3000);
+                                            goto inResCont;
+                                    }
+                                    
+                                    break;
+
+                                case "No":
+                                    break;
+
+
+                                default:
+                                    Console.WriteLine("Invalid Response\n");
+                                  
+                                    goto wantSpecial;
+
+                            }
                         }
+                        else
+                        {
+
+                            Console.WriteLine("This store has no special! Lets customize a pizza for you!");
+                            //TODO ORder Custom Pizza 
+                            
+                        }
+
+                        
+
                     }
                 }
-
+           
             }
             if (resStartOrder.Equals("No"))
             {
@@ -459,227 +777,19 @@ namespace PizzaBoxClient
             {
                 Console.WriteLine("Invalid Response");
                 goto startOrder;
-            }//NOT Starting Order 
-
-
-
+            }//NOT Starting Order
+       
         StoreSignedIn:
 
      
-           
+        
             Console.WriteLine();
-            
-
-            //in the database this instead could be the unique key or UUID 
-            
-
-
         
         Console.WriteLine("Welcome Back. Lets Sell Some Pizzas");
 
         
 
-            /*
-
-
-//--------------------------------------User View ------------------------
-#region UserClient 
-UserLogged:
-Console.WriteLine("User Logged In \n");
-bool uLOG = true;
-while (uLOG)
-{
-
-Console.WriteLine("Welcome to PizzaBox\n");
-InvRes:
-Console.WriteLine("Currently you can: \nView Pizza Locations : (View)\nSelect a Pizza Location: (Select <StoreName>)");
-Console.WriteLine("Look at your Order History: (History)");
-Console.WriteLine("Selecting a location will allow you to create an order");
-string ul1 = Console.ReadLine();
-
-String[] splitul1 = ul1.Split(" ");
-int lenUserArg = ul1.Length; 
-
-if (lenUserArg == 1) //viewing Locations 
-{
-    switch (ul1)
-    {
-
-        case "View":
-            ViewLocations:
-            Console.WriteLine("Here are list of spots to grab a pie!\n");
-            foreach (Store store in StoreDataBase)
-            {
-                Console.WriteLine();
-                store.DisplayInfo(); 
-            }
-            goto InvRes;
-
-        case "History":
-
-            Console.WriteLine("Viewing Your History");
-            currentUser.showHistory();
-            goto InvRes;
-
-        case"Home":
-            uLOG = false; 
-            goto Home;
-
-        default:
-            Console.WriteLine($"Invalid Input: {ul1} \n");
-            goto InvRes; 
-    }
-
-}
-else if(lenUserArg == 2)// used for selecting a location 
-{
-    switch (splitul1[0])
-    {
-
-
-        case "Select":
-            bool storeExist = false;
-            foreach (Store store in StoreDataBase)
-            {
-                if(store.getName().Equals(splitul1[1]))
-                {
-                    storeExist = true; 
-                }
-            }
-            switch (storeExist)
-            {
-                case true:
-                    goto UserStorePage; 
-
-                case false:
-                    Console.WriteLine("Store does not exist!");
-                    goto InvRes; 
-            }
-
-
-
-        default:
-            Console.WriteLine("Invalid Input");
-            goto InvRes;
-
-    }
-
-
-}//else if 2 arguments 
-
-else
-{
-    Console.WriteLine("Invalid Input:\n");
-    goto InvRes;
-
-}
-
-
-
-UserStorePage:
-Console.WriteLine("Lets take a look at the menus");
-Console.WriteLine(splitul1[1]);
-
-//in the database this instead could be the unique key or UUID 
-Store curStore = StoreDataBase.Find((Store obj) => obj.getName().Equals(splitul1));
-curStore.DisplayPresets();
-startOrder:
-Console.WriteLine("Would you like to start an order");
-Console.WriteLine("Note: Starting and order adds you to Store's Account");
-Console.WriteLine("'Yes' or 'No' ");
-string startOrderRes = Console.ReadLine();
-switch (startOrderRes)
-{
-    case "Yes":
-        curStore.addUser(currentUser);
-    StoreMenuPage:
-
-        //HERE we will create the order object
-
-        Order newUserOrder = new Order(); 
-
-        Console.WriteLine("Ok! Lets get started with your order!");
-        AnotherPizza:
-        Console.WriteLine("Here is the menu again");
-        curStore.DisplayPresets();
-        Console.WriteLine("\nWould you like to add one of their presets pizzas: 'Preset'");
-        Console.WriteLine("Or would you like to build your own custom pizza : 'Custom' ");
-        string pizzaRes = Console.ReadLine();
-
-
-
-        // possibly have the using block
-        //to create an order  incase it should be destroyed later
-
-        switch (pizzaRes)
-        {
-            case "Preset":
-                PresetPizza:
-                Console.WriteLine("What preset pizza would you like to add to your order");
-                Console.WriteLine("Enter the number of the preset");
-                curStore.DisplayPresets();
-                string presetChoice = Console.ReadLine();
-
-                try
-                {
-
-                }
-                catch (Exception e) {
-
-                    Console.WriteLine("Invalid Choice");
-                    throw;
-
-                }
-
-
-
-                break;
-
-            case "Custom":
-
-                break;
-
-
-
-            case "Cancel":
-                goto UserLogged;
-
-            case "Home":
-                goto UserLogged;
-
-            default:
-                Console.WriteLine("Inv; lid Response");
-                goto StoreMenuPage;
-
-        }
-
-
-
-
-        break;
-
-
-    case "No":
-        goto UserLogged; 
-
-
-    case "Home":
-        goto UserLogged;
-
-    default:
-        Console.WriteLine("Invalid Response");
-        goto startOrder;
-}
-
-
-
-}// While User is Logged In 
-
-#endregion UserClient
-
-
-
-
+/*
 //---------------------------------Store View  ------------------------
 #region StoreClient
 StoreLogged:
@@ -691,6 +801,8 @@ while (sLOG)
 }
 #endregion Store Client
 */
+
+
 
         }//Main 
     }//Class 

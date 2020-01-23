@@ -28,13 +28,6 @@ namespace PizzaBoxStoring.Repositories
 
         public void AddPizza(Pizza pizza)
         {
-            /*
-            if (db.PizzaUser.Any(e => e.Username == pizzauser.Username) || pizzauser.Username == null)
-            {
-                Console.WriteLine($"This username : {pizzauser.Username} already exists. Please choose another");
-                return;
-            }
-            */
 
             db.Pizza.Add(Mapper.Map(pizza));
             db.SaveChanges();
@@ -47,6 +40,22 @@ namespace PizzaBoxStoring.Repositories
 
             return query;
         }
+
+
+
+        public IEnumerable<int> getLastPizza()
+        {
+            var query = from p in db.Pizza
+                        orderby p.Pid descending 
+                        select (p.Pid);
+
+                return query;
+                        
+
+        }
+
+
+
 
         public void ModifyPizza(Pizza pizzastore)
         {
