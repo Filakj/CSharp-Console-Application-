@@ -8,10 +8,9 @@ namespace PizzaBoxDomain.Abstracts
     public interface IRepositoryPizzaOrder<T>
     {
 
-            IEnumerable<T> GetPizzaOrder();
-            void AddPizzaOrder(T pizzaorder);
-            void ModifyPizzaOrder(T pizzaorder);
-            void RemovePizzaOrder(int orderID);
+        IEnumerable<T> GetPizzaOrder();
+        void AddPizzaOrder(T pizzaorder);
         IEnumerable<T> GetPizzaOrderHistoryUser(string username);
+        IEnumerable<T> GetOrders(string storename);
     }
 }

@@ -26,9 +26,10 @@ namespace PizzaBoxStoring.Repositories
         // METHODS
 
         public void AddPizzaOrder(PizzaOrder pizzaorder){//(string username, string storename, float cost, int pid) { 
-      
+
             /*
-            if (db.PizzaOrder.Any(e => e.Orderid == pizzaorder.Orderid))  //|| Ordered.Username == null)
+            check users last order location and place to see if they can order from new place 
+            if (db.PizzaOrder.Any(e => (e.Username == pizzaorder.Username) & (e.OrderDate -DateTime(now )  //|| Ordered.Username == null)
             {
                 Console.WriteLine($"This order : {pizzaorder.Orderid} already exists. Please try again");
                 return;
@@ -55,16 +56,16 @@ namespace PizzaBoxStoring.Repositories
         }
 
 
-
-
-        public void ModifyPizzaOrder(PizzaOrder pizzaorder)
+        public IEnumerable<PizzaOrder> GetOrders(string storename)
         {
-            throw new NotImplementedException();
+            var query = from e in db.PizzaOrder
+                        where (e.Storename.Equals(storename))
+                        select Mapper.Map(e);
+
+            return query;
         }
 
-        public void RemovePizzaOrder(int orderID)
-        {
-            throw new NotImplementedException();
-        }
+
+
     }
 }

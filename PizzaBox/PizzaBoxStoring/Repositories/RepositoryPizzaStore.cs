@@ -55,12 +55,7 @@ namespace PizzaBoxStoring.Repositories
             return query;
         }
 
-        public void ModifyPizzaUser(PizzaStore pizzastore)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemovePizzaUser(string username)
+        public IEnumerable<PizzaStore> GetOrders(string s)
         {
             throw new NotImplementedException();
         }

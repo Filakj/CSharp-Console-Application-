@@ -57,23 +57,6 @@ namespace PizzaBoxStoring.Repositories
 
 
 
-
-
-        public void ModifyPizza(Pizza pizzastore)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemovePizza(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemovePizza(int pid)
-        {
-            throw new NotImplementedException();
-        }
-
        
     }
 }
