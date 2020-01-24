@@ -73,14 +73,14 @@ namespace PizzaBoxClient
 
             string storeChoice = null;
 
-        SignOut:
+        
             Console.Clear();
             Console.WriteLine("-----------------------------------------------------------------------");
             Console.WriteLine("Welcome to the PizzaBox Client \n Your Pie Awaits!");
             System.Threading.Thread.Sleep(1000);
             Console.WriteLine("Are you a 'User' or a 'Store' ?\n");
             Console.WriteLine("-----------------------------------------------------------------------");
-        res1:
+        
             string type = Console.ReadLine();
 
 
@@ -93,7 +93,7 @@ namespace PizzaBoxClient
                 case "Store":
                 StoreLogin:
                     //Console.WriteLine("Hello Store");
-                res1Store:
+                
                     Console.WriteLine("Login or Sign Up");
                     string res1Store = Console.ReadLine();
                     switch (res1Store)
@@ -370,7 +370,7 @@ namespace PizzaBoxClient
                 goto InvRes;
             }
 
-            if (ul1.Equals("Home")) {
+            if (ul1.Equals("Logout")) {
                 Console.WriteLine("Logging Out\n");
                 System.Threading.Thread.Sleep(3000);
                 Console.Clear();
@@ -463,6 +463,10 @@ namespace PizzaBoxClient
                             string resPresetPizza = Console.ReadLine();
                             switch (resPresetPizza)
                             {
+                                case "No":
+                                    break;
+
+
                                 case "Yes":
                                     //get pizza by id and get cost and ad to order
 
@@ -479,6 +483,8 @@ namespace PizzaBoxClient
                                     Console.WriteLine("-----------------------------------------------------------------------");
                                     string resContinue = Console.ReadLine();
                                     switch (resContinue) {
+
+
                                         case "Yes":
                                             Pizza tempPizza = new Pizza();
                                         createCustom:
@@ -529,7 +535,7 @@ namespace PizzaBoxClient
                                                 default:
                                                     Console.WriteLine("Invalid Input");
                                                     System.Threading.Thread.Sleep(2000);
-                                                    goto createCustom;
+                                                    goto pickSize;
 
                                             }
 
@@ -797,7 +803,7 @@ namespace PizzaBoxClient
 
 
                                                 case "No":
-                                                Discarding:
+                                               
                                                     Console.WriteLine("-----------------------------------------------------------------------");
                                                     Console.WriteLine("The Pizza Didnt Want You Either!");
                                                     Console.WriteLine("Discarding Order");
@@ -820,20 +826,19 @@ namespace PizzaBoxClient
                                                     goto NoMore;
                                             }
 
+                                        
 
-
-                                            break;
+                                       
                                         default:
                                             Console.WriteLine("Invalid Responce\n");
                                             System.Threading.Thread.Sleep(3000);
                                             goto inResCont;
                                     }
 
-                                    break;
+                          
 
-                                case "No":
-                                    goto strrtCustom;
-                                    break;
+
+                                    
 
 
                                 default:

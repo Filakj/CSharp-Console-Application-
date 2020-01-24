@@ -8,7 +8,6 @@ namespace PizzaBoxDomain.Abstracts
     {
         IEnumerable<T> GetPizzaUser();
         void AddPizzaUser(T pizzauser);
-        void ModifyPizzaUser(T pizzauser);
-        void RemovePizzaUser(string username);
+
     }
 }

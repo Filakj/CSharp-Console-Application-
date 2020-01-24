@@ -52,16 +52,5 @@ namespace PizzaBoxStoring.Repositories
         }
 
 
-
-
-        public void ModifyPizzaUser(PizzaUser employee)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemovePizzaUser(string username)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
