@@ -56,7 +56,18 @@ namespace PizzaBoxStoring.Repositories
         }
 
 
+        public decimal GetPizzaPrice(int id)
+        {
+            var query = (from p in db.Pizza
+                         where p.Pid == id
+                         select p.Cost);
 
-       
+            decimal result = query.FirstOrDefault();
+
+            return result;
+        }
+
+
+
     }
 }

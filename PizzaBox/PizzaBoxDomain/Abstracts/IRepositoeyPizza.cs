@@ -10,6 +10,7 @@ namespace PizzaBoxDomain.Abstracts
         IEnumerable<T> GetPizza();
         void AddPizza(T pizza);
         int GetLastPizza();
+        public decimal GetPizzaPrice(int id);
 
     }
 }

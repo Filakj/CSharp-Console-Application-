@@ -20,7 +20,7 @@ namespace PizzaBoxClient
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello");
+            //Console.WriteLine("Hello");
 
 
 
@@ -92,7 +92,7 @@ namespace PizzaBoxClient
 
                 case "Store":
                 StoreLogin:
-                    Console.WriteLine("Hello Store");
+                    //Console.WriteLine("Hello Store");
                 res1Store:
                     Console.WriteLine("Login or Sign Up");
                     string res1Store = Console.ReadLine();
@@ -187,8 +187,6 @@ namespace PizzaBoxClient
                             }
 
 
-
-
                         case "Home":
                             goto Home;
 
@@ -197,8 +195,6 @@ namespace PizzaBoxClient
                             goto StoreLogin;
 
                     }
-
-
 
 
 
@@ -310,15 +306,12 @@ namespace PizzaBoxClient
                             }
 
 
-
-
                         case "Home":
                             goto Home;
 
                         default:
                             Console.WriteLine("Invalid Input");
                             goto TypeUser;//Outer Default for Selecting User Type
-
 
                     }
 
@@ -344,7 +337,8 @@ namespace PizzaBoxClient
 
 
             if (ul1.Equals("View")) {
-                //ViewLocations:
+                Console.Clear();
+                Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine("Here are list of spots to grab a pie!\n");
 
                 PizzaStores = repoStore.GetPizzaStore();
@@ -352,40 +346,48 @@ namespace PizzaBoxClient
                 foreach (PizzaStore store in PizzaStores)
                 {
                     //Console.Clear();
-                    Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
+                    Console.WriteLine($"{store.Storename,-1} {store.StoreAddress,-4} {store.Cell,-4}");
                     //Console.Clear();
 
                 }
+                Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine();
                 goto InvRes;
             }
             if (ul1.Equals("History")) {
                 Console.Clear();
                 Console.WriteLine("Viewing Your Order History\n");
-
+                Console.WriteLine("-----------------------------------------------------------------------");
 
                 var history = repoOrder.GetPizzaOrderHistoryUser(currentPizzaUser.Username);
                 foreach (var order in history)
                 {
-                    //TODO fix in context to display pizza 
-                    Console.WriteLine($"Order: {order.Orderid,10} Store: {order.Storename,30} {order.Cost,40} {order.OrderDate,50} {order.PizzaOne}");
+                    
+                    Console.WriteLine($"Order: {order.Orderid,-1} Store: {order.Storename,-4} {(decimal)order.Cost,-4} {order.OrderDate,-4}");
                 }
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine();
                 goto InvRes;
             }
+
             if (ul1.Equals("Home")) {
                 Console.WriteLine("Logging Out\n");
+                System.Threading.Thread.Sleep(3000);
+                Console.Clear();
+
                 goto Home;
             }
             if (ul1.Equals("Select"))
             {
+                Console.Clear();
+                Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine("What PizzaStore would you like to order from ? ");
                 foreach (PizzaStore store in PizzaStores)
                 {
-                    //Console.Clear();
-                    Console.WriteLine($"{store.Storename,20} {store.StoreAddress,40} {store.Cell}");
-                    //Console.Clear();
+                    Console.WriteLine($"{store.Storename,-1} Address:{store.StoreAddress,-4} Cell: {store.Cell,-4}");
 
                 }
+                Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine();
                 string location = Console.ReadLine();
                 bool storeExist = false;
@@ -410,16 +412,12 @@ namespace PizzaBoxClient
 
                 }
 
-
             }//Select
             else
             {
                 Console.WriteLine("Invalid Input\n");
                 goto InvRes;
             }
-
-
-
 
 
         UserStorePage:
@@ -440,7 +438,7 @@ namespace PizzaBoxClient
                 TempOrder.Username = currentPizzaUser.Username;
                 TempOrder.Storename = storeChoice;
                 int storeSpecialID;
-                //Console.Clear();
+                
                 Console.WriteLine("Lets take a look at the menus");
                 foreach (var pizzastore in PizzaStores)
                 {
@@ -448,17 +446,20 @@ namespace PizzaBoxClient
                     {
                         storeSpecialID = (int)pizzastore.PresetPizzaId;
 
-                        // Console.WriteLine("GOT HERE ! ");
+                     
 
                         string specialpizza = (pizzastore.PresetSpecial);
-                        //Console.WriteLine("THE PRESET SPECIAL IS " + specialpizza);
+                        
 
-                        //Console.WriteLine("GOT HERE SECOND TIME");
+                    
                         if (specialpizza.Length > 1)
                         {
                         wantSpecial:
+                            Console.Clear();
+                            Console.WriteLine("-----------------------------------------------------------------------");
                             Console.WriteLine($"The house special pizza is {specialpizza}");
                             Console.WriteLine("Would you like to add this to your order? Yes or No");
+                            Console.WriteLine("-----------------------------------------------------------------------");
                             string resPresetPizza = Console.ReadLine();
                             switch (resPresetPizza)
                             {
@@ -466,18 +467,16 @@ namespace PizzaBoxClient
                                     //get pizza by id and get cost and ad to order
 
                                     TempOrder.PizzaOne = storeSpecialID;
-                                    foreach (Pizza pizza in Pizzas)
-                                    {
-                                        if (pizza.Pid == storeSpecialID)
-                                        {
-                                            TempOrder.Cost = TempOrder.Cost + pizza.Cost;
-                                        }
-                                    }
+                                    repoPizza = Dependencies.CreatePizzaPizza();
+                                    TempOrder.Cost += repoPizza.GetPizzaPrice(storeSpecialID);
+                                    
 
                                 inResCont:
                                     Console.Clear();
-                                    Console.WriteLine("Your Current Total Is: " + TempOrder.Cost);
+                                    Console.WriteLine("-----------------------------------------------------------------------");
+                                    Console.WriteLine("Your Current Total Is: $" + TempOrder.Cost);
                                     Console.WriteLine("Would you like to continue order with a custom Pizza? Yes or No");
+                                    Console.WriteLine("-----------------------------------------------------------------------");
                                     string resContinue = Console.ReadLine();
                                     switch (resContinue) {
                                         case "Yes":
@@ -575,7 +574,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Bacon = 1;
                                                     toppings++;
                                                 }
-                                                if (bacon.Equals("No"))
+                                                else if (bacon.Equals("No"))
                                                 {
                                                     tempPizza.Bacon = 0;
                                                 }
@@ -591,7 +590,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Pepperoni = 1;
                                                     toppings++;
                                                 }
-                                                if (pepe.Equals("No"))
+                                                else if (pepe.Equals("No"))
                                                 {
                                                     tempPizza.Pepperoni = 0;
                                                 }
@@ -607,7 +606,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Mozzerella = 1;
                                                     toppings++;
                                                 }
-                                                if (moz.Equals("No"))
+                                                else if (moz.Equals("No"))
                                                 {
                                                     tempPizza.Mozzerella = 0;
                                                 }
@@ -623,7 +622,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Sausage = 1;
                                                     toppings++;
                                                 }
-                                                if (sau.Equals("No"))
+                                                else if (sau.Equals("No"))
 
                                                 {
                                                     tempPizza.Sausage = 0;
@@ -641,7 +640,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Pineapple = 1;
                                                     toppings++;
                                                 }
-                                                if (pine.Equals("No"))
+                                                else if (pine.Equals("No"))
                                                 {
                                                     tempPizza.Pineapple = 0;
                                                 }
@@ -657,7 +656,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Onion = 1;
                                                     toppings++;
                                                 }
-                                                if (oni.Equals("No"))
+                                                else if (oni.Equals("No"))
                                                 {
                                                     tempPizza.Onion = 0;
                                                 }
@@ -673,7 +672,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Chicken = 1;
                                                     toppings++;
                                                 }
-                                                if (chi.Equals("No"))
+                                                else if (chi.Equals("No"))
                                                 {
                                                     tempPizza.Chicken = 0;
                                                 }
@@ -688,7 +687,7 @@ namespace PizzaBoxClient
                                                     tempPizza.Pepper = 1;
                                                     toppings++;
                                                 }
-                                                if (pep.Equals("No"))
+                                                else if (pep.Equals("No"))
                                                 {
                                                     tempPizza.Pepper = 0;
                                                 }
@@ -746,6 +745,7 @@ namespace PizzaBoxClient
                                                     Console.Write(".");
                                                     Console.WriteLine("Done");
                                                     Console.WriteLine("Your Pizza Should Arrive in 30 Minutes or Less");
+                                                    System.Threading.Thread.Sleep(3000);
                                                     goto UserSignedIn;
 
 
@@ -762,6 +762,7 @@ namespace PizzaBoxClient
                                                     System.Threading.Thread.Sleep(3000);
                                                     Console.Clear();
                                                     goto UserSignedIn;
+
                                                 default:
                                                     Console.WriteLine("Invalid Input");
                                                     System.Threading.Thread.Sleep(3000);

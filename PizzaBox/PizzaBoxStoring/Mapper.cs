@@ -48,7 +48,7 @@ namespace PizzaBoxStoring
         {
             return new PizzaBoxDomain.Models.PizzaOrder()
             {
-
+                Orderid = pizzaorder.Orderid,
                 Username = pizzaorder.Username,
                 Storename = pizzaorder.Storename,
                 Cost = pizzaorder.Cost,
