@@ -346,7 +346,7 @@ namespace PizzaBoxClient
                 foreach (PizzaStore store in PizzaStores)
                 {
                     //Console.Clear();
-                    Console.WriteLine($"{store.Storename,-1} {store.StoreAddress,-4} {store.Cell,-4}");
+                    Console.WriteLine($"{store.Storename,0} {store.StoreAddress,-10} {store.Cell,-10}");
                     //Console.Clear();
 
                 }
@@ -363,7 +363,7 @@ namespace PizzaBoxClient
                 foreach (var order in history)
                 {
                     
-                    Console.WriteLine($"Order: {order.Orderid,-1} Store: {order.Storename,-4} {(decimal)order.Cost,-4} {order.OrderDate,-4}");
+                    Console.WriteLine($"Order: {order.Orderid,0} Store: {order.Storename,-5} {(decimal)order.Cost,-5:C} {order.OrderDate,-5}");
                 }
                 Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine();
@@ -384,7 +384,7 @@ namespace PizzaBoxClient
                 Console.WriteLine("What PizzaStore would you like to order from ? ");
                 foreach (PizzaStore store in PizzaStores)
                 {
-                    Console.WriteLine($"{store.Storename,-1} Address:{store.StoreAddress,-4} Cell: {store.Cell,-4}");
+                    Console.WriteLine($"{store.Storename,0} Address:{store.StoreAddress,-10} Cell: {store.Cell,-5}");
 
                 }
                 Console.WriteLine("-----------------------------------------------------------------------");
@@ -474,7 +474,7 @@ namespace PizzaBoxClient
                                 inResCont:
                                     Console.Clear();
                                     Console.WriteLine("-----------------------------------------------------------------------");
-                                    Console.WriteLine("Your Current Total Is: $" + TempOrder.Cost);
+                                    Console.WriteLine($"Your Current Total Is: {TempOrder.Cost:C}");
                                     Console.WriteLine("Would you like to continue order with a custom Pizza? Yes or No");
                                     Console.WriteLine("-----------------------------------------------------------------------");
                                     string resContinue = Console.ReadLine();
@@ -727,7 +727,7 @@ namespace PizzaBoxClient
                                             Console.Clear();
                                         SubmitO:
                                             Console.WriteLine("-----------------------------------------------------------------------");
-                                            Console.WriteLine($"So your total is {TempOrder.Cost}");
+                                            Console.WriteLine($"So your total is {TempOrder.Cost:C}");
                                             Console.WriteLine("Would you like to confirm and place your order? Yes or No?");
                                             Console.WriteLine("-----------------------------------------------------------------------");
                                             string placeOrder = Console.ReadLine();
@@ -897,7 +897,7 @@ namespace PizzaBoxClient
                     Console.WriteLine("");
                     foreach (PizzaOrder o in pizzaOrdersForStore)
                     {
-                        Console.WriteLine($"{o.Username,-10} {o.Cost,-15} {o.OrderDate,-20}");
+                        Console.WriteLine($"{o.Username,0} {o.Cost,-10:C} {o.OrderDate,-10}");
                     }
                     goto ValidStoreInput;
 
@@ -914,7 +914,7 @@ namespace PizzaBoxClient
                         totalSales = totalSales + (decimal)o.Cost;
                     }
                     Console.WriteLine("Total Number of Sales: " + count);
-                    Console.WriteLine("Total Revenue: " + totalSales);
+                    Console.WriteLine($"Total Revenue: {totalSales:C}");
                     Console.WriteLine("-----------------------------------------------------------------------");
                     goto ValidStoreInput;
 
